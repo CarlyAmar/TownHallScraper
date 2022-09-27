@@ -6,6 +6,9 @@ from json import JSONEncoder
 class Comment:
     def __init__(self, config: dict):
         self._config = config
+        for key in self._config.keys():
+            if type(self._config[key]) is str:
+                self._config[key] = self._sanitize(self._config[key])
 
     @property
     def comment_id(self) -> int:
@@ -29,7 +32,7 @@ class Comment:
 
     @property
     def comment(self) -> str:
-        return self._config["comment"]
+        return self._config["comment"].replace("'", "").replace('"', '')
 
     def datetime(self) -> datetime.datetime:
         return datetime.datetime.strptime("0"+self.date, '%m/%d/%y  %I:%M %p')
@@ -39,6 +42,13 @@ class Comment:
 
     def json(self) -> dict:
         return self._config.copy()
+
+    def is_anon(self) -> bool:
+        return self.author == "Anonymous"
+
+    @staticmethod
+    def _sanitize(string: str):
+        return string.replace('"', '').replace("'", "")
 
     # subclass JSONEncoder
     class _DateTimeEncoder(JSONEncoder):
