@@ -48,7 +48,7 @@ class Comment:
 
     @staticmethod
     def _sanitize(string: str):
-        return string.replace('"', '').replace("'", "")
+        return string.replace('"', '').replace("'", "").strip().replace(".", "").replace("!", "")
 
     # subclass JSONEncoder
     class _DateTimeEncoder(JSONEncoder):

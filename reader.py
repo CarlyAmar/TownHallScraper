@@ -48,19 +48,19 @@ class Reader:
     def count_titles(self) -> Counter:
         count = Counter()
         for comm in self._comments:
-            count.update({comm.title: 1})
+            count.update({comm.title.lower(): 1})
         return count
 
     def count_authors(self) -> Counter:
         count = Counter()
         for comm in self._comments:
-            count.update({comm.author: 1})
+            count.update({comm.author.lower(): 1})
         return count
 
     def count_comments(self) -> Counter:
         count = Counter()
         for comm in self._comments:
-            count.update({comm.comment: 1})
+            count.update({comm.comment.lower(): 1})
         return count
 
 
@@ -102,5 +102,9 @@ if __name__ == "__main__":
     }
     print_stats(stats)
 
-    print("Titles: {}".format(str(reader.count_titles())))
-    print("Authors: {}".format(str(reader.count_authors())))
+    print("Titles:")
+    for title in reader.count_titles().most_common(10):
+        print("\t{}: {}".format(title[0], title[1]))
+    print("Authors:")
+    for author in reader.count_authors().most_common(10):
+        print("\t{}: {}".format(author[0], author[1]))
